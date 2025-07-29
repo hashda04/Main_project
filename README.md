@@ -28,7 +28,7 @@ mainProject/
 ├── backend/
 │   └── app.py               # Flask API with dummy GET & POST routes
 │
-└── frontend/
+└── silentwatch-demo/
     ├── src/
     │   ├── App.jsx          # Integrates Login, ContactForm, and Checkout
     │   ├── components/
