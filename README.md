@@ -1,6 +1,4 @@
-Here’s the documentation for everything you’ve done so far in your SilentWatch project — up to the point where the basic frontend and backend are connected, but SilentWatch itself has not been installed yet.
 
----
 
 # SilentWatch – Phase 1 Documentation
 
