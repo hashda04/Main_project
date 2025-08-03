@@ -1,26 +1,17 @@
-# backend/app.py
-
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_cors import CORS
+from monitor import monitor_bp  # monitor.py must be in same folder as this file
 
 app = Flask(__name__)
-CORS(app)  # Allow frontend access (important for React)
+CORS(app)  # allow frontend (e.g., localhost:3000) to call these APIs
+
+# Register monitor blueprint
+app.register_blueprint(monitor_bp)
+
+# Health check route (optional)
 @app.route('/')
-def home():
-    return 'Welcome to SilentWatch backend!'
-
-
-# Example API: GET
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    return jsonify({'message': 'Hello from Flask backend!'})
-
-# Example API: POST
-@app.route('/api/submit', methods=['POST'])
-def submit_data():
-    data = request.get_json()
-    print("Received data:", data)
-    return jsonify({'status': 'success', 'data': data})
+def health():
+    return jsonify({'status': 'backend up'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
