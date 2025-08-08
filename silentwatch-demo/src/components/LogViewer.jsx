@@ -1,23 +1,30 @@
-// src/components/LogViewer.jsx
 import React, { useEffect, useState } from 'react';
 
 const LogViewer = () => {
   const [logs, setLogs] = useState([]);
 
-  const fetchLogs = async () => {
-    try {
-      const res = await fetch('http://127.0.0.1:5000/monitor/recent?limit=50');
-      const data = await res.json();
-      setLogs(data.reverse());
-    } catch (e) {
-      console.warn('Failed to fetch logs', e);
-    }
-  };
-
   useEffect(() => {
-    fetchLogs();
-    const interval = setInterval(fetchLogs, 4000);
-    return () => clearInterval(interval);
+    let isMounted = true;
+
+    const fetchLogs = async () => {
+      try {
+        const res = await fetch('/monitor/recent?limit=50'); // Use relative URL
+        const data = await res.json();
+        if (isMounted) {
+          setLogs(data.reverse());
+        }
+      } catch (e) {
+        console.warn('Failed to fetch logs', e);
+      }
+    };
+
+    fetchLogs(); // Initial fetch
+    const interval = setInterval(fetchLogs, 5000); // Fetch every 5 seconds
+
+    return () => {
+      clearInterval(interval);  // Prevent memory leaks or duplicate fetches
+      isMounted = false;        // Block state updates after unmount
+    };
   }, []);
 
   return (
