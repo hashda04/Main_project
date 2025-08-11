@@ -5,3 +5,9 @@ __pycache__/
 node_modules/
 backend/logs/silentwatch.jsonl
 
+backend/package-lock.json
+package-lock.json
+silentwatch-demo/.gitignore
+
+silentwatch-demo/vite.config.js
+silentwatch-demo/package-lock.json
