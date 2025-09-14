@@ -11,6 +11,7 @@ console.log('main.jsx running');
 const watcher = createSilentWatch({
   debug: true,
   backendUrl: 'http://localhost:4001/log', // your express backend
+  ignoreSelectors: ["#openModalBtn", ".dropdown-toggle"], // skip these
 });
 
 watcher.start();
