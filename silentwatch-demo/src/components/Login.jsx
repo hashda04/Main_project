@@ -1,33 +1,31 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [simulateSilentFailure, setSimulateSilentFailure] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (simulateSilentFailure) {
-      console.log('Simulating silent failure: skipping network call');
-      return;
-    }
+    setLoading(true);
 
     try {
-      const resp = await fetch('/api/login', {
+      // ❌ Common real-world mistake: forgot to await fetch
+      const response = fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
-      if (!resp.ok) {
-        console.error('Login failed:', resp.status);
-      } else {
-        console.log('Login successful');
-      }
+      // The developer assumes it succeeded...
+      setTimeout(() => {
+        setLoading(false);
+        alert('Logged in successfully!');
+      }, 500);
+
     } catch (err) {
-      console.error('Login error:', err);
+      // No visible crash, but backend never actually got the data
+      setLoading(false);
     }
   };
 
@@ -55,20 +53,13 @@ const Login = () => {
             required
           />
         </div>
-        <div className="flex items-center gap-4">
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-            Login
-          </button>
-          <label className="text-sm">
-            <input
-              type="checkbox"
-              checked={simulateSilentFailure}
-              onChange={(e) => setSimulateSilentFailure(e.target.checked)}
-              className="mr-1"
-            />
-            Simulate silent failure
-          </label>
-        </div>
+        <button
+          disabled={loading}
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
     </div>
   );

@@ -1,17 +1,12 @@
-// src/components/Checkout.jsx
 import React, { useState } from 'react';
 
 const Checkout = () => {
   const [amount, setAmount] = useState(50);
-  const [simulateSilentFailure, setSimulateSilentFailure] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   const handleCheckout = async (e) => {
     e.preventDefault();
-
-    if (simulateSilentFailure) {
-      console.log('Simulating silent failure: no backend call');
-      return;
-    }
+    setProcessing(true);
 
     try {
       const res = await fetch('/api/checkout', {
@@ -20,13 +15,15 @@ const Checkout = () => {
         body: JSON.stringify({ amount }),
       });
 
-      if (!res.ok) {
-        console.error('Checkout failed:', res.status);
-      } else {
-        console.log('Checkout successful');
-      }
-    } catch (err) {
-      console.error('Checkout error:', err);
+      // ❌ Bug: assuming payment succeeded even if backend failed
+      setTimeout(() => {
+        setProcessing(false);
+        alert('Payment successful!');
+      }, 500);
+
+    } catch {
+      // ❌ No visible error or message to the user
+      setProcessing(false);
     }
   };
 
@@ -44,20 +41,13 @@ const Checkout = () => {
             min={1}
           />
         </div>
-        <div className="flex items-center gap-4">
-          <button type="submit" className="px-4 py-2 bg-purple-600 text-white rounded">
-            Pay ${amount}
-          </button>
-          <label className="text-sm">
-            <input
-              type="checkbox"
-              checked={simulateSilentFailure}
-              onChange={(e) => setSimulateSilentFailure(e.target.checked)}
-              className="mr-1"
-            />
-            Simulate silent failure
-          </label>
-        </div>
+        <button
+          disabled={processing}
+          type="submit"
+          className="px-4 py-2 bg-purple-600 text-white rounded"
+        >
+          {processing ? 'Processing...' : `Pay $${amount}`}
+        </button>
       </form>
     </div>
   );

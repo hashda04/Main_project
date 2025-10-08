@@ -1,23 +1,20 @@
 // src/main.jsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { createSilentWatch, attachSilentWatchDetectors } from "silent-watch";
 
-import { createSilentWatch } from 'silent-watch'; // <-- linked package
 
-console.log('main.jsx running');
-
-const watcher = createSilentWatch({
-  debug: true,
-  backendUrl: 'http://localhost:4001/log', // your express backend
-  ignoreSelectors: ["#openModalBtn", ".dropdown-toggle"], // skip these
+attachSilentWatchDetectors({
+  backendUrl: "http://localhost:5000/log",
+  apiKey: "G7d!9q2X@bL6r#N8vP4y",
 });
 
-watcher.start();
-watcher.log('SilentWatch initialized from demo main.jsx');
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
