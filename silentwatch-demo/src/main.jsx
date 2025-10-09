@@ -1,23 +1,16 @@
-// src/main.jsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { createSilentWatch, attachSilentWatchDetectors } from "silent-watch";
 
-import { createSilentWatch } from 'silent-watch'; // <-- linked package
-
-console.log('main.jsx running');
-
-const watcher = createSilentWatch({
-  debug: true,
-  backendUrl: 'http://localhost:4001/log', // your express backend
-  ignoreSelectors: ["#openModalBtn", ".dropdown-toggle"], // skip these
+// Correct way to pass API key
+attachSilentWatchDetectors({
+  backendUrl: "http://localhost:5000/log",
+  apiKey: "SW-9xY7!fQ2@LpM4v",
 });
 
-watcher.start();
-watcher.log('SilentWatch initialized from demo main.jsx');
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
