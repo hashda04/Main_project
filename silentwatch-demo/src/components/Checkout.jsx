@@ -1,3 +1,6 @@
+//src/components/Checkout.jsx
+
+
 import React, { useState } from 'react';
 
 const Checkout = () => {
